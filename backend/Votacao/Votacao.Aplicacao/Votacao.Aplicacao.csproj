@@ -15,10 +15,4 @@
     <ProjectReference Include="..\Votacao.Dominio\Votacao.Dominio.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="UseCase\Restaurante\Lista\PorId\" />
-    <Folder Include="UseCase\Restaurante\Lista\Todos\" />
-    <Folder Include="UseCase\Usuario\Lista\PorId\" />
-  </ItemGroup>
-
 </Project>

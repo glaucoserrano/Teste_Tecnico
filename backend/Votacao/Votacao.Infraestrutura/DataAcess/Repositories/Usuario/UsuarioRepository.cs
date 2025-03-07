@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Votacao.Dominio.Entities;
 using Votacao.Dominio.Repositories;
 using UsuarioEntidade = Votacao.Dominio.Entities;
 
@@ -33,6 +34,43 @@ namespace Votacao.Infraestrutura.DataAcess.Repositories.Usuario
             var usuarios = await _context.Usuarios.AsNoTracking().ToListAsync();
 
             return usuarios;
+        }
+
+        public async Task<UsuarioEntidade.Usuario> ListarUsuarioPorId(int id)
+        {
+            var usuario = await _context.Usuarios.FirstOrDefaultAsync(usuario =>
+            usuario.Id == id);
+
+            return usuario;
+        }
+
+        public async Task<bool> EditarUsuario(int id, UsuarioEntidade.Usuario usuario)
+        {
+            var usuarioExiste = await ListarUsuarioPorId(id);
+
+            if (usuarioExiste == null)
+                return false;
+
+            usuarioExiste.Nome = usuario.Nome;
+            usuarioExiste.Email = usuario.Email;
+
+            await _context.SaveChangesAsync();
+
+            return true;
+
+        }
+
+        public async Task<bool> ExcluirUsuario(int id)
+        {
+            var usuarioExiste = await ListarUsuarioPorId(id);
+
+            if (usuarioExiste == null)
+                return false;
+
+            _context.Usuarios.Remove(usuarioExiste);
+            await _context.SaveChangesAsync();
+
+            return true;
         }
     }
 }

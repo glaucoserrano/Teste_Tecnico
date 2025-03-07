@@ -1,5 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using Votacao.Aplicacao.UseCase.Restaurante.Editar;
+using Votacao.Aplicacao.UseCase.Restaurante.Excluir;
+using Votacao.Aplicacao.UseCase.Restaurante.Lista.PorId;
+using Votacao.Aplicacao.UseCase.Restaurante.Lista.Todos;
 using Votacao.Aplicacao.UseCase.Restaurante.Registro;
+using Votacao.Aplicacao.UseCase.Usuario.Editar;
+using Votacao.Aplicacao.UseCase.Usuario.Excluir;
+using Votacao.Aplicacao.UseCase.Usuario.Lista.PorId;
 using Votacao.Aplicacao.UseCase.Usuario.Lista.Todos;
 using Votacao.Aplicacao.UseCase.Usuario.Registro;
 using Votacao.Dominio.Repositories;
@@ -26,7 +33,17 @@ builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IRestauranteRepository, RestauranteRepository>();
 builder.Services.AddScoped<IRegistroUsuarioUseCase, RegistroUsuarioUseCase>();
 builder.Services.AddScoped<IListaTodosUsuariosUseCase, ListaTodosUsuariosUseCase>();
+builder.Services.AddScoped<IListarUsuarioPorIdUseCase, ListarUsuarioPorIdUseCase>();
+builder.Services.AddScoped<IEditarUsuarioUseCase, EditarUsuarioUseCase>();
+builder.Services.AddScoped<IExcluirUsuarioUseCase, ExcluirUsuarioUseCase>();
+
 builder.Services.AddScoped<IRegistroRestauranteUseCase, RegistroRestauranteUseCase>();
+builder.Services.AddScoped<IListarTodosRestaurantesUseCase, ListarTodosRestaurantesUseCase>();
+builder.Services.AddScoped<IListarRestaurantePorIdUseCase, ListarRestaurantePorIdUseCase>();
+builder.Services.AddScoped<IEditarRestauranteUseCase, EditarRestauranteUseCase>();
+builder.Services.AddScoped<IExcluirRestauranteUseCase, ExcluirRestauranteUseCase>();
+
+
 
 
 var app = builder.Build();

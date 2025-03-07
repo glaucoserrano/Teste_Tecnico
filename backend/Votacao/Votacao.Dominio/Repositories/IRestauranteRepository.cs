@@ -6,5 +6,9 @@ namespace Votacao.Dominio.Repositories
     {
         Task<bool> VerificarRestauranteExiste(string nome);
         Task AdicionarRestaurante(Restaurante restaurante);
+        Task<List<Restaurante>> ListarTodosRestaurantes();
+        Task<Restaurante> ListarRestaurantePorId(int id);
+        Task<bool> EditarRestaurante(int id, Restaurante restaurante);
+        Task<bool> ExcluirRestaurante(int id);
     }
 }

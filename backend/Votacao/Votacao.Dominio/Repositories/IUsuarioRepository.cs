@@ -7,5 +7,9 @@ namespace Votacao.Dominio.Repositories
         Task<bool> VerificarEmailExiste(string email);
         Task AdicionarUsuario(Usuario usuario);
         Task<List<Usuario>> ListaTodosUsuarios();
+
+        Task<Usuario> ListarUsuarioPorId(int id);
+        Task<bool> EditarUsuario(int id, Usuario usuario);
+        Task<bool> ExcluirUsuario(int id);
     }
 }
