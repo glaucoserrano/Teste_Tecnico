@@ -1,0 +1,13 @@
+# Ignorar pastas e arquivos do Visual Studio
+.vs/
+*.suo
+*.user
+*.userossc
+*.sln.docstates
+*.cache
+*.pdb
+
+# Ignorar binários e dependências do .NET
+bin/
+obj/
+packages/

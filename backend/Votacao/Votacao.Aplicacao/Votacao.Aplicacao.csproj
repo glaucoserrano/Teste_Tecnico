@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Class1.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Votacao.Comunicacao\Votacao.Comunicacao.csproj" />
+    <ProjectReference Include="..\Votacao.Dominio\Votacao.Dominio.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="UseCase\Restaurante\Lista\PorId\" />
+    <Folder Include="UseCase\Restaurante\Lista\Todos\" />
+    <Folder Include="UseCase\Usuario\Lista\PorId\" />
+  </ItemGroup>
+
+</Project>
