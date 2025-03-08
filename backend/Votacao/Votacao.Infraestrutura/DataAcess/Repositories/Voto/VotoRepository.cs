@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Text.RegularExpressions;
+using Microsoft.EntityFrameworkCore;
+using Votacao.Dominio.DTO;
 using Votacao.Dominio.Repositories;
 
 namespace Votacao.Infraestrutura.DataAcess.Repositories.Voto
@@ -41,21 +43,78 @@ namespace Votacao.Infraestrutura.DataAcess.Repositories.Voto
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Dominio.Entities.Restaurante?> ListarResultadoRestauranteHoje()
+        public async Task<VencedorHojeDTO?> ListarResultadoRestauranteHoje()
         {
             var hoje = DateTime.UtcNow.Date;
 
             var resultado = await _context.Votos
                 .Where(voto => voto.DiaVoto == hoje)
                 .GroupBy(voto => voto.RestauranteId)
-                .OrderByDescending(voto => voto.Count())
-                .Select(voto => voto.Key)
+                .Select(voto => new
+                {
+                    RestauranteId = voto.Key,
+                    TotalVotos = voto.Count()
+                })
+                .OrderByDescending(voto => voto.TotalVotos)
                 .FirstOrDefaultAsync();
 
-            if(resultado == 0)
+            if(resultado == null)
                 return null;
 
-            return await _context.Restaurantes.FindAsync(resultado);
+            var restaurante = await _context.Restaurantes.FindAsync(resultado.RestauranteId);
+            if (restaurante == null)
+                return null;
+
+            return new VencedorHojeDTO
+            {
+                Id = restaurante.Id,
+                Nome = restaurante.Nome,
+                TotalVotos = resultado.TotalVotos
+            };
+        }
+        public async Task<List<RestauranteVencedorSemanaDTO>> ListarVencedoresSemana()
+        {
+            var inicioSemana = DateTime.UtcNow.Date.AddDays(-6);
+            var hoje = DateTime.UtcNow.Date;
+
+            var resultado = await _context.Votos
+                .Where(voto => voto.DiaVoto >= inicioSemana && voto.DiaVoto <= hoje)
+                .GroupBy(voto => new { voto.DiaVoto, voto.RestauranteId })
+                .Select(grupo => new
+                {
+                    Data = grupo.Key.DiaVoto,
+                    RestauranteId = grupo.Key.RestauranteId,
+                    TotalVotos = grupo.Count()
+                })
+                .OrderBy(grupo => grupo.Data)
+                .ToListAsync();
+
+            var vencedoresPorDia = resultado
+                .GroupBy(resultado => resultado.Data)
+                .Select(grupo =>
+                {
+                    var vencedor = grupo.OrderByDescending(r => r.TotalVotos).First();
+                    return new { grupo.Key, vencedor.RestauranteId, vencedor.TotalVotos };
+                })
+                .ToList();
+
+            var listaVencedores = new List<RestauranteVencedorSemanaDTO>();
+
+            foreach (var item in vencedoresPorDia)
+            {
+                var restaurante = await _context.Restaurantes.FindAsync(item.RestauranteId);
+                if(restaurante != null)
+                {
+                    listaVencedores.Add(new RestauranteVencedorSemanaDTO
+                    {
+                        Data = item.Key,
+                        RestauranteId = restaurante.Id,
+                        RestauranteNome = restaurante.Nome,
+                        TotalVotos = item.TotalVotos
+                    });
+                }
+            }
+            return listaVencedores;
         }
     }
 }

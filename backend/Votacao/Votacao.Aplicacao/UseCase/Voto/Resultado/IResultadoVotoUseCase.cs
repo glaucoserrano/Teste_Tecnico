@@ -1,9 +1,9 @@
-﻿using Votacao.Comunicacao.Response.Restaurante;
+﻿using Votacao.Comunicacao.Response.Voto;
 
 namespace Votacao.Aplicacao.UseCase.Voto.Resultado
 {
     public interface IResultadoVotoUseCase
     {
-        Task<RegistroRestauranteResponseJson> Execute();
+        Task<VencedorDiaResponseJson> Execute();
     }
 }

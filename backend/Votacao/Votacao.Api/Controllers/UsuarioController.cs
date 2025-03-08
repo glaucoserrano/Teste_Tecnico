@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Votacao.Aplicacao.UseCase.Usuario.Editar;
 using Votacao.Aplicacao.UseCase.Usuario.Excluir;
+using Votacao.Aplicacao.UseCase.Usuario.Lista.PorEmail;
 using Votacao.Aplicacao.UseCase.Usuario.Lista.PorId;
 using Votacao.Aplicacao.UseCase.Usuario.Lista.Todos;
 using Votacao.Aplicacao.UseCase.Usuario.Registro;
 using Votacao.Comunicacao.Request.Usuario;
 using Votacao.Comunicacao.Response.Usuario;
 using Votacao.Dominio.Entities;
-using Votacao.Dominio.Repositories;
 
 namespace Votacao.Api.Controllers
 {
@@ -45,6 +45,19 @@ namespace Votacao.Api.Controllers
             int id)
         {
             var response = await useCase.Execute(id);
+            if (!response.retorno)
+                return NotFound(response);
+
+            return Ok(response);
+        }
+        [HttpGet("email/{email}")]
+        [ProducesResponseType(typeof(RegistroUsuarioResponseJson), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(RegistroUsuarioResponseJson), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> ListarUsuarioPorEmail(
+            [FromServices] IListarUsuarioPorEmailUseCase useCase,
+            string email)
+        {
+            var response = await useCase.Execute(email);
             if (!response.retorno)
                 return NotFound(response);
 

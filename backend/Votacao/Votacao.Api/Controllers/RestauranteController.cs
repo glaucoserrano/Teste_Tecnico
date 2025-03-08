@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Votacao.Aplicacao.UseCase.Restaurante.Editar;
 using Votacao.Aplicacao.UseCase.Restaurante.Excluir;
+using Votacao.Aplicacao.UseCase.Restaurante.Lista.Disponiveis;
 using Votacao.Aplicacao.UseCase.Restaurante.Lista.PorId;
 using Votacao.Aplicacao.UseCase.Restaurante.Lista.Todos;
 using Votacao.Aplicacao.UseCase.Restaurante.Registro;
@@ -45,10 +46,23 @@ namespace Votacao.Api.Controllers
         [ProducesResponseType(typeof(RegistroRestauranteResponseJson), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(RegistroRestauranteResponseJson), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> ListarRestaurantePorId(
-    [FromServices] IListarRestaurantePorIdUseCase useCase,
-    int id)
+            [FromServices] IListarRestaurantePorIdUseCase useCase,
+            int id)
         {
             var response = await useCase.Execute(id);
+            if (!response.retorno)
+                return NotFound(response);
+
+            return Ok(response);
+        }
+        [HttpGet("disponiveis")]
+        [ProducesResponseType(typeof(RegistroRestauranteResponseJson), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(RegistroRestauranteResponseJson), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> ListarRestauranteDisponiveis(
+            [FromServices] IListarRestaurantesDisponiveisUseCase useCase
+            )
+        {
+            var response = await useCase.Execute();
             if (!response.retorno)
                 return NotFound(response);
 

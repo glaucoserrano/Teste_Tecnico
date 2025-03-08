@@ -1,4 +1,6 @@
-﻿using Votacao.Dominio.Entities;
+﻿using Votacao.Dominio.DTO;
+using Votacao.Dominio.Entities;
+
 
 namespace Votacao.Dominio.Repositories
 {
@@ -8,6 +10,7 @@ namespace Votacao.Dominio.Repositories
         Task<bool> RestauranteEscolhidoSemana(int RestauranteId, DateTime hoje);
         Task RegistrarVoto(Voto voto);
 
-        Task<Restaurante?> ListarResultadoRestauranteHoje();
+        Task<VencedorHojeDTO?> ListarResultadoRestauranteHoje();
+        Task<List<RestauranteVencedorSemanaDTO>> ListarVencedoresSemana();
     }
 }

@@ -43,6 +43,14 @@ namespace Votacao.Infraestrutura.DataAcess.Repositories.Usuario
 
             return usuario;
         }
+        public async Task<UsuarioEntidade.Usuario> ListarUsuarioPorEmail(string email)
+        {
+            var usuario = await _context.Usuarios.FirstOrDefaultAsync(usuario =>
+            usuario.Email == email);
+
+            return usuario;
+        }
+
 
         public async Task<bool> EditarUsuario(int id, UsuarioEntidade.Usuario usuario)
         {

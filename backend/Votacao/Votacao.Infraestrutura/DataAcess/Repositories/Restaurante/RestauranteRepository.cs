@@ -68,5 +68,22 @@ namespace Votacao.Infraestrutura.DataAcess.Repositories.Restaurante
 
             return true;
         }
+        public async Task<List<Dominio.Entities.Restaurante?>> ListarRestaurantesDisponiveis()
+        {
+            var hoje = DateTime.UtcNow;
+            var todosRestaurantes = await _context.Restaurantes.AsNoTracking().ToListAsync();
+            var inicioSemana = hoje.AddDays(-(int)hoje.DayOfWeek);
+
+            var votosSemana = await _context.Votos
+                .Where(voto => voto.DiaVoto >= inicioSemana )
+                .Select(voto => voto.RestauranteId)
+                .ToListAsync();
+
+            var restaurantesDisponiveis = todosRestaurantes
+                .Where(restaurante => !votosSemana.Contains(restaurante.Id))
+                .ToList();
+
+            return restaurantesDisponiveis;
+        }
     }
 }

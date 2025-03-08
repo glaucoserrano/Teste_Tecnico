@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Votacao.Comunicacao.Response.Restaurante;
+using Votacao.Comunicacao.Response.Voto;
 using Votacao.Dominio.Repositories;
 
 namespace Votacao.Aplicacao.UseCase.Voto.Resultado
@@ -17,22 +18,22 @@ namespace Votacao.Aplicacao.UseCase.Voto.Resultado
             _votoRepository = votoRepository;
         }
 
-        public async Task<RegistroRestauranteResponseJson> Execute()
+        public async Task<VencedorDiaResponseJson> Execute()
         {
             var restaurante = await _votoRepository.ListarResultadoRestauranteHoje();
 
             if (restaurante == null)
-                return new RegistroRestauranteResponseJson
+                return new VencedorDiaResponseJson
                 {
                     retorno = false,
                     mensagem = "Nenhum voto registrado hoje",
-                    Restaurante = null
+                    vencedor = null
                 };
-            return new RegistroRestauranteResponseJson
+            return new VencedorDiaResponseJson
             {
                 retorno = true,
                 mensagem = "Restaurante Escolhido",
-                Restaurante = restaurante
+                vencedor = restaurante
             };
         }
     }

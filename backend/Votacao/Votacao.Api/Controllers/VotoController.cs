@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
 using Votacao.Aplicacao.UseCase.Voto.Registro;
 using Votacao.Aplicacao.UseCase.Voto.Resultado;
+using Votacao.Aplicacao.UseCase.Voto.VencedorSemana;
 using Votacao.Comunicacao.Request.Voto;
 using Votacao.Comunicacao.Response.Restaurante;
 using Votacao.Comunicacao.Response.Voto;
@@ -28,6 +29,16 @@ namespace Votacao.Api.Controllers
         [ProducesResponseType(typeof(RegistroRestauranteResponseJson), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(RegistroRestauranteResponseJson), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ListarResultado([FromServices] IResultadoVotoUseCase useCase)
+        {
+            var response = await useCase.Execute();
+            if (!response.retorno)
+                return BadRequest(response);
+            return Ok(response);
+        }
+        [HttpGet("vencedores-semana")]
+        [ProducesResponseType(typeof(RegistroRestauranteResponseJson), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(RegistroRestauranteResponseJson), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ListarVencedoresSemana([FromServices] IVencedorSemanaUseCase useCase)
         {
             var response = await useCase.Execute();
             if (!response.retorno)
