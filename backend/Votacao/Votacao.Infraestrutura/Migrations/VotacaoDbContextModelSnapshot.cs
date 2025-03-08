@@ -36,7 +36,7 @@ namespace Votacao.Infraestrutura.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Restaurantes");
+                    b.ToTable("Restaurantes", (string)null);
                 });
 
             modelBuilder.Entity("Votacao.Dominio.Entities.Usuario", b =>
@@ -57,7 +57,7 @@ namespace Votacao.Infraestrutura.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Usuarios");
+                    b.ToTable("Usuarios", (string)null);
                 });
 
             modelBuilder.Entity("Votacao.Dominio.Entities.Voto", b =>
@@ -83,7 +83,7 @@ namespace Votacao.Infraestrutura.Migrations
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("Votos");
+                    b.ToTable("Votos", (string)null);
                 });
 
             modelBuilder.Entity("Votacao.Dominio.Entities.Voto", b =>

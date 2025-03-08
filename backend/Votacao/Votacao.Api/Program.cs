@@ -9,10 +9,13 @@ using Votacao.Aplicacao.UseCase.Usuario.Excluir;
 using Votacao.Aplicacao.UseCase.Usuario.Lista.PorId;
 using Votacao.Aplicacao.UseCase.Usuario.Lista.Todos;
 using Votacao.Aplicacao.UseCase.Usuario.Registro;
+using Votacao.Aplicacao.UseCase.Voto.Registro;
+using Votacao.Aplicacao.UseCase.Voto.Resultado;
 using Votacao.Dominio.Repositories;
 using Votacao.Infraestrutura.DataAcess;
 using Votacao.Infraestrutura.DataAcess.Repositories.Restaurante;
 using Votacao.Infraestrutura.DataAcess.Repositories.Usuario;
+using Votacao.Infraestrutura.DataAcess.Repositories.Voto;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +34,8 @@ builder.Services.AddSwaggerGen();
 //Injecao de Dependecias
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IRestauranteRepository, RestauranteRepository>();
+builder.Services.AddScoped<IVotoRepository, VotoRepository>();
+
 builder.Services.AddScoped<IRegistroUsuarioUseCase, RegistroUsuarioUseCase>();
 builder.Services.AddScoped<IListaTodosUsuariosUseCase, ListaTodosUsuariosUseCase>();
 builder.Services.AddScoped<IListarUsuarioPorIdUseCase, ListarUsuarioPorIdUseCase>();
@@ -42,6 +47,11 @@ builder.Services.AddScoped<IListarTodosRestaurantesUseCase, ListarTodosRestauran
 builder.Services.AddScoped<IListarRestaurantePorIdUseCase, ListarRestaurantePorIdUseCase>();
 builder.Services.AddScoped<IEditarRestauranteUseCase, EditarRestauranteUseCase>();
 builder.Services.AddScoped<IExcluirRestauranteUseCase, ExcluirRestauranteUseCase>();
+
+builder.Services.AddScoped<IRegistroVotoUseCase, RegistroVotoUseCase>();
+builder.Services.AddScoped<IResultadoVotoUseCase, ResultadoVotoUseCase>();
+
+
 
 
 
