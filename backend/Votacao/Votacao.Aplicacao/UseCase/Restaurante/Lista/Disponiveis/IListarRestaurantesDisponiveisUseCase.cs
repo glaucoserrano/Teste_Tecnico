@@ -4,6 +4,6 @@ namespace Votacao.Aplicacao.UseCase.Restaurante.Lista.Disponiveis
 {
     public interface IListarRestaurantesDisponiveisUseCase
     {
-        Task<RestaurantesDisponiveisResponseJson> Execute();
+        Task<RestaurantesDisponiveisResponseJson> Execute(int usuarioId);
     }
 }

@@ -26,7 +26,7 @@ const Voto = () =>{
             
             const response = await axios.get(`${BASEURL}Usuario/email/${email}`)
             setUsuario(response.data.usuario)
-            buscarRestaurantes();
+            buscarRestaurantes(response.data.usuario.id);
         }catch(error: any){
             if(error.response && error.response.data){
                 setMensagem(error.response.data.mensagem)
@@ -38,16 +38,16 @@ const Voto = () =>{
             setOpenSnackbar(true)
         }
     }
-    const buscarRestaurantes = async() =>{
+    const buscarRestaurantes = async(usuarioid : number) =>{
         try{
-            const response = await axios.get(`${BASEURL}Restaurante/disponiveis`)
+            const response = await axios.get(`${BASEURL}Restaurante/disponiveis/${usuarioid}`)
             setRestaurantes(response.data.restaurantes)
         }catch(error :any){
             if(error.response && error.response.data){
                 setMensagem(error.response.data.mensagem)
                 
             }else{
-                setMensagem("Erro ao validar email")
+                setMensagem("Erro ao buscar restaurantes")
                 
             }
             setOpenSnackbar(true)

@@ -12,9 +12,9 @@ namespace Votacao.Aplicacao.UseCase.Restaurante.Lista.Disponiveis
             _restauranteRepository = restauranteRepository;
         }
 
-        public async Task<RestaurantesDisponiveisResponseJson> Execute()
+        public async Task<RestaurantesDisponiveisResponseJson> Execute(int usuarioId)
         {
-            var restaurantes = await _restauranteRepository.ListarRestaurantesDisponiveis();
+            var restaurantes = await _restauranteRepository.ListarRestaurantesDisponiveis(usuarioId);
 
             if (restaurantes == null)
                 new RestaurantesDisponiveisResponseJson

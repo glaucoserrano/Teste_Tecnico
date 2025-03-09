@@ -27,14 +27,30 @@ namespace Votacao.Infraestrutura.DataAcess.Repositories.Voto
         public async Task<bool> RestauranteEscolhidoSemana(int RestauranteId, DateTime hoje)
         {
             var inicioSemana = hoje.AddDays(-(int)hoje.DayOfWeek);
-            var restauranteEscolhidoSemana = await _context.Votos.AnyAsync(
-                voto => voto.RestauranteId == RestauranteId &&
-                voto.DiaVoto >= inicioSemana);
+            var meioDiaHoje = hoje.Date.AddHours(12);
 
-            if (restauranteEscolhidoSemana)
-                return true;
+            var restauranteEscolhidoSemana = await _context.Votos
+                .Where(voto => voto.RestauranteId == RestauranteId && voto.DiaVoto >= inicioSemana)
+                .GroupBy(voto => voto.DiaVoto)
+                .Select(grupo => new
+                {
+                    Dia = grupo.Key,
+                    TotalVotos = grupo.Count()
+                })
+                .OrderByDescending(voto => voto.TotalVotos)
+                .ToListAsync();
 
-            return false;
+            if (!restauranteEscolhidoSemana.Any())
+                return false;
+            var vencedorHoje = restauranteEscolhidoSemana
+                .Where(voto => voto.Dia == hoje.Date)
+                .OrderByDescending(voto => voto.TotalVotos)
+                .FirstOrDefault();
+
+            if (hoje < meioDiaHoje && vencedorHoje != null && vencedorHoje.Dia.Date == hoje.Date)
+                return false;
+
+            return restauranteEscolhidoSemana.Any(voto => voto.Dia < hoje.Date);
         }
 
         public async Task RegistrarVoto(Dominio.Entities.Voto voto)

@@ -55,14 +55,15 @@ namespace Votacao.Api.Controllers
 
             return Ok(response);
         }
-        [HttpGet("disponiveis")]
+        [HttpGet("disponiveis/{usuarioId}")]
         [ProducesResponseType(typeof(RegistroRestauranteResponseJson), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(RegistroRestauranteResponseJson), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> ListarRestauranteDisponiveis(
-            [FromServices] IListarRestaurantesDisponiveisUseCase useCase
+            [FromServices] IListarRestaurantesDisponiveisUseCase useCase,
+            int usuarioId
             )
         {
-            var response = await useCase.Execute();
+            var response = await useCase.Execute(usuarioId);
             if (!response.retorno)
                 return NotFound(response);
 

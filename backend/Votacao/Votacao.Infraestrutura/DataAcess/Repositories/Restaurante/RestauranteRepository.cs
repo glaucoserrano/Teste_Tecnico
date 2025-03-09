@@ -68,14 +68,14 @@ namespace Votacao.Infraestrutura.DataAcess.Repositories.Restaurante
 
             return true;
         }
-        public async Task<List<Dominio.Entities.Restaurante?>> ListarRestaurantesDisponiveis()
+        public async Task<List<Dominio.Entities.Restaurante?>> ListarRestaurantesDisponiveis(int usuarioId)
         {
             var hoje = DateTime.UtcNow;
             var todosRestaurantes = await _context.Restaurantes.AsNoTracking().ToListAsync();
             var inicioSemana = hoje.AddDays(-(int)hoje.DayOfWeek);
 
             var votosSemana = await _context.Votos
-                .Where(voto => voto.DiaVoto >= inicioSemana )
+                .Where(voto => voto.DiaVoto >= inicioSemana && voto.DiaVoto <= hoje && voto.UsuarioId == usuarioId )
                 .Select(voto => voto.RestauranteId)
                 .ToListAsync();
 

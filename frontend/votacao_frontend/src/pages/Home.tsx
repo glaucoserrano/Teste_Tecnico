@@ -8,11 +8,17 @@ interface Restaurante{
     totalVotos: number
     data?: string
 }
+interface RestauranteVencedor{
+    id:number,
+    restauranteNome: string
+    totalVotos: number
+    data?: string
+}
 
 const Home = () =>{
     const BASEURL = "https://localhost:7205/api/"
     const [restauranteHoje,setRestauranteHoje] = useState<Restaurante | null>(null)
-    const [vencedoresSemana,setVencedoresSemana] = useState<Restaurante[]>([])
+    const [vencedoresSemana,setVencedoresSemana] = useState<RestauranteVencedor[]>([])
     const [openSnackbar, setOpenSnackbar] = useState(false)
     const [mensagem, setMensagem] = useState("")
 
@@ -24,6 +30,7 @@ const Home = () =>{
 
                 const semanaResponse = await axios.get(`${BASEURL}Voto/vencedores-semana`)
                 setVencedoresSemana(semanaResponse.data.listaVencedor)
+                
 
             }catch(error: any){
                 if(error.response && error.response.data){
@@ -64,7 +71,7 @@ const Home = () =>{
                                 {vencedoresSemana.map((restaurante,index) => (
                                     <li key={index}>
                                         <Typography>
-                                            {restaurante.data} - {restaurante.nome} ({restaurante.totalVotos} votos)
+                                            {restaurante.data} - {restaurante.restauranteNome} ({restaurante.totalVotos} votos)
                                         </Typography>
                                     </li>
                                 ))}

@@ -10,6 +10,6 @@ namespace Votacao.Dominio.Repositories
         Task<Restaurante> ListarRestaurantePorId(int id);
         Task<bool> EditarRestaurante(int id, Restaurante restaurante);
         Task<bool> ExcluirRestaurante(int id);
-        Task<List<Restaurante?>> ListarRestaurantesDisponiveis();
+        Task<List<Restaurante?>> ListarRestaurantesDisponiveis(int usuarioId);
     }
 }
