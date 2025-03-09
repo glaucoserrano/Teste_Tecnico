@@ -1,6 +1,6 @@
-*** Teste Técnico
+***Teste Técnico
 
-*** Projeto: Sistema de Votação em Restaurante para almoço
+***Projeto: Sistema de Votação em Restaurante para almoço
 
 ***Principais técnologias:
 .Net C#
